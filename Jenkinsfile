@@ -154,14 +154,14 @@ pipeline {
         //     }
         // }
 
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         echo "SonarQube Analysis !!"
-        //         withSonarQubeEnv('sonarqube-9.9') {
-        //             sh '/opt/sonarscanner/bin/sonar-scanner'
-        //         }
-        //     }
-        // }
+        stage('SonarQube Analysis') {
+            steps {
+                echo "SonarQube Analysis !!"
+                withSonarQubeEnv('sonarqube-9.9') {
+                    sh '/opt/sonarscanner/bin/sonar-scanner'
+                }
+            }
+        }
 
         // stage ('Quality Gate') {
         //     steps {
@@ -187,16 +187,16 @@ pipeline {
                 sh "az account set --subscription ${params.SUBSCRIPTION}"
                 
                 // Create ASP for functionApp
-                // sh "az appservice plan create --name ${params.AZURE_FUNCTION_ASP_NAME} --resource-group ${params.RESOURCE_GROUP_NAME} --sku ${params.SKU} --is-linux --location ${params.REGION}"
+                sh "az appservice plan create --name ${params.AZURE_FUNCTION_ASP_NAME} --resource-group ${params.RESOURCE_GROUP_NAME} --sku ${params.SKU} --is-linux --location ${params.REGION}"
                 
                 // Create FunctionApp
                 sh "az functionapp create --name ${params.AZURE_FUNCTION_NAME} --resource-group ${params.RESOURCE_GROUP_NAME} --plan ${params.AZURE_FUNCTION_ASP_NAME} --runtime python --runtime-version ${params.PYTHON_RUNTIME_VERSION} --functions-version 4 --storage-account ${params.FUNC_STORAGE_ACCOUNT_NAME} --app-insights ${params.AZURE_APP_INSIGHTS_NAME}"
                 
                 // Vnet Integration
-                // sh "az functionApp vnet-integration add -g ${params.RESOURCE_GROUP_NAME} -n ${params.AZURE_FUNCTION_NAME} --vnet ${params.VNET_NAME} --subnet ${params.OUTBOUND_SNET_NAME}"
+                sh "az functionApp vnet-integration add -g ${params.RESOURCE_GROUP_NAME} -n ${params.AZURE_FUNCTION_NAME} --vnet ${params.VNET_NAME} --subnet ${params.OUTBOUND_SNET_NAME}"
                 
                 // Enabling Private end points
-                // sh "az network private-endpoint create -g ${params.RESOURCE_GROUP_NAME} -n ${params.PRIVATE_ENDPOINT_NAME} --vnet-name ${params.VNET_NAME} --subnet ${params.INBOUND_SNET_NAME} --private-connection-resource-id $functionAppId --connection-name ${params.PRIVATE_CONNECTION_NAME} -l '${params.REGION}' --group-id sites"
+                sh "az network private-endpoint create -g ${params.RESOURCE_GROUP_NAME} -n ${params.PRIVATE_ENDPOINT_NAME} --vnet-name ${params.VNET_NAME} --subnet ${params.INBOUND_SNET_NAME} --private-connection-resource-id $functionAppId --connection-name ${params.PRIVATE_CONNECTION_NAME} -l '${params.REGION}' --group-id sites"
             }
         }
 
