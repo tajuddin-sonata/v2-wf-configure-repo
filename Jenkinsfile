@@ -135,24 +135,26 @@ pipeline {
         //     }
         // }
 
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         withSonarQubeEnv('sonarqube-9.9') {
-        //             script {
-        //                 sh """
-        //                     echo "SonarQube Analysis"
+        /*
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonarqube-9.9') {
+                    script {
+                        sh """
+                            echo "SonarQube Analysis"
                             
-        //                     ${SONARQUBE_SCANNER_HOME}/bin/sonar-scanner \
-        //                         -Dsonar.projectKey=My-Configure-Project \
-        //                         -Dsonar.host.url=http://4.240.69.23:9000 \
-        //                         -Dsonar.sources=src \
-        //                         -Dsonar.sourceEncoding=UTF-8 \
-        //                         -Dsonar.python.version=3.11
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
+                            ${SONARQUBE_SCANNER_HOME}/bin/sonar-scanner \
+                                -Dsonar.projectKey=My-Configure-Project \
+                                -Dsonar.host.url=http://4.240.69.23:9000 \
+                                -Dsonar.sources=src \
+                                -Dsonar.sourceEncoding=UTF-8 \
+                                -Dsonar.python.version=3.11
+                        """
+                    }
+                }
+            }
+        }
+        */
 
         stage('SonarQube Analysis') {
             steps {
@@ -163,21 +165,23 @@ pipeline {
             }
         }
 
-        // stage ('Quality Gate') {
-        //     steps {
-        //         script {
-        //             echo "Quality Gate Check"
-        //             timeout(time: 1, unit: 'HOURS') {
-        //                 def qg = waitForQualityGate()
-        //                 if (dq.status != 'OK') {
-        //                     error "Pipeline aborted due to quality failure: ${qg.status}"
-        //                     currentBuild.result = 'FAILURE'
+        /*
+        stage ('Quality Gate') {
+            steps {
+                script {
+                    echo "Quality Gate Check"
+                    timeout(time: 1, unit: 'HOURS') {
+                        def qg = waitForQualityGate()
+                        if (dq.status != 'OK') {
+                            error "Pipeline aborted due to quality failure: ${qg.status}"
+                            currentBuild.result = 'FAILURE'
 
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+                        }
+                    }
+                }
+            }
+        }
+        */
         
 
         stage('Create FunctionApp') {
